@@ -5,6 +5,9 @@ const cartRouter = require('../routers/cartRouter');
 const profileRouter = require('../routers/profileRouter');
 
 module.exports = (app) => {
+    app.use('/', (req, res) => {
+        res.send('Server Running...');
+    });
     app.use('/api/user', userRouter);
     app.use('/api/category', categoryRouter);
     app.use('/api/product', productRouter);
