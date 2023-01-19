@@ -29,7 +29,7 @@ module.exports.getCategories = async (req, res) => {
                 .sort({ name: 1 });
             return res.status(200).send(categories);
         } else {
-            return res.status(400).send({ message: "No category available!" });
+            return res.status(400).send({ noData: "No category available!" });
         }
     } catch (error) {
         return res.status(400).send({ message: "Failed to fetch categories!" });
