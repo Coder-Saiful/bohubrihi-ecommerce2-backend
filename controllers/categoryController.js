@@ -36,6 +36,17 @@ module.exports.getCategories = async (req, res) => {
     }
 }
 
+module.exports.getSingleCategory = async (req, res) => {
+    try {
+        const categoryId = req.params.id;
+        const category = await Category.findById(categoryId);
+        if (!category) return res.status(400).send({message: 'Failed to fetch category!'});
+        return res.status(200).send(category);
+    } catch (error) {
+        return res.status(400).send({ message: "Failed to fetch category!" });
+    }
+}
+
 module.exports.updateCategory = async (req, res) => {
     try {
         const categoryId = req.params.id;
