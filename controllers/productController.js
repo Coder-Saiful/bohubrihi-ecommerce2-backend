@@ -60,7 +60,7 @@ module.exports.getProducts = async (req, res) => {
                 .populate('category', 'name');
             return res.status(200).send(products);
         } else {
-            return res.status(200).send({message: "No product available!"});
+            return res.status(200).send({noData: "No product available!"});
         }
     } catch (error) {
         return res.status(400).send({ message: "Failed to fetch products" });
