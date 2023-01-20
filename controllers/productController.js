@@ -40,7 +40,7 @@ module.exports.createProduct = async (req, res) => {
                 });
             });
         } else {
-            return res.status(400).send({ message: "No image provided!" });
+            return res.status(400).send({ noImage: "No image provided!" });
         }
     });
 
