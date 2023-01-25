@@ -5,7 +5,7 @@ const compression = require('compression');
 
 module.exports = (app) => {
     app.use(cors({
-        origin: process.env.FRONTEND_URL,
+        origin: [process.env.FRONTEND_URL, process.env.LOCAL_URL],
         methods: ["POST", "GET", "PUT", "DELETE"]
     }));
     app.use(compression());
