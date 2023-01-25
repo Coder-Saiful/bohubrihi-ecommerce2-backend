@@ -139,16 +139,16 @@ module.exports.deleteProduct = async (req, res) => {
     }
 }
 
-const body = {
-    order: "desc",
-    sortBy: "price",
-    limit: 5,
-    skip: 0,
-    filters: {
-        price: [0, 1000],
-        category: ['afldjfad', 'afdlsfjads', 'fadlsfj']
-    }
-}
+// const body = {
+//     order: "desc",
+//     sortBy: "price",
+//     limit: 5,
+//     skip: 0,
+//     filters: {
+//         price: [0, 1000],
+//         category: ['afldjfad', 'afdlsfjads', 'fadlsfj']
+//     }
+// }
 
 // Filter by any fields
 module.exports.filterProducts = async (req, res) => {
@@ -176,7 +176,6 @@ module.exports.filterProducts = async (req, res) => {
                 }
             }
         }
-        console.log(args)
         const products = await Product.find(args)
             .select({photo: 0})
             .populate('category', 'name')
