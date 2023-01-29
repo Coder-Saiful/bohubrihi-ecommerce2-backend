@@ -48,11 +48,16 @@ module.exports.createProduct = async (req, res) => {
 
 // get all the products
 module.exports.getProducts = async (req, res) => {
+    // res.setHeader("Access-Control-Allow-Origin", "*")
+    // res.setHeader("Access-Control-Allow-Credentials", "true");
+    // res.setHeader("Access-Control-Max-Age", "1800");
+    // res.setHeader("Access-Control-Allow-Headers", "content-type");
+    // res.setHeader( "Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS" ); 
     try {
         if (await Product.count() > 0) {
             const order = req.query.order === "desc" ? -1 : 1;
             const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
-            const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+            const limit = req.query.limit ? parseInt(req.query.limit) : 0;
             const products = await Product.find()
                 .select({ photo: 0 })
                 .sort({[sortBy]: order})
@@ -155,7 +160,7 @@ module.exports.filterProducts = async (req, res) => {
     try {
         const order = req.body.order === "desc" ? -1 : 1;
         const sortBy = req.body.sortBy ? req.query.sortBy : "_id";
-        const limit = req.body.limit ? parseInt(req.query.limit) : 10;
+        const limit = req.body.limit ? parseInt(req.query.limit) : 0;
         const skip = parseInt(req.body.skip);
         const filters = req.body.filters;
         const args = {};
