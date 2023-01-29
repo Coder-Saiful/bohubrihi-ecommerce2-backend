@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { createProduct, getProducts, productDetails, updateProduct, deleteProduct, getProductPhoto, filterProducts } = require('../controllers/productController');
+const { createProduct, getProducts, productDetails, updateProduct, deleteProduct, getProductPhoto, filterProducts, sortProductByCategory } = require('../controllers/productController');
 const authorize = require('../middlewares/authorize');
 const admin = require('../middlewares/admin');
 
@@ -17,5 +17,8 @@ router.route('/photo/:id')
 
 router.route('/filter')
     .post(filterProducts);
+
+router.route('/sort/:catName')
+    .get(sortProductByCategory);
 
 module.exports = router;

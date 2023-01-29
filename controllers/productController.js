@@ -182,8 +182,31 @@ module.exports.filterProducts = async (req, res) => {
             .sort({[sortBy]: order})
             .limit(limit)
             .skip(skip);
-        return res.status(200).send(products);
+        if (products.length > 0) {
+            return res.status(200).send(products);
+        } else {
+            return res.status(200).send({noData: "No data available!"});
+        }
     } catch (error) {
-        console.log(error)
+        return res.status(400).send({message: "Failed to fetch products!"});
+    }
+}
+
+module.exports.sortProductByCategory = async (req, res) => {
+    try {
+        if (await Product.count() > 0) {
+            const catName = req.params.catName;
+            const order = req.params.order === "desc" ? -1 : 1;
+            const sortBy = req.params.sortBy ? req.params.sortBy : "_id";
+            const limit = req.params.limit ? parseInt(req.params.limit) : 10;
+            const products = await Product.find({category: {name: catName}});
+            // return res.status(200).send(products);
+            console.log(req.params)
+            console.log(products)
+        } else {
+            return res.status(200).send({noData: "No product available!"});
+        }
+    } catch (error) {
+        return res.status(400).send({ message: "Failed to fetch products" });
     }
 }
