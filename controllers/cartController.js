@@ -1,4 +1,4 @@
-const { CartItem } = require('../controllers/categoryController');
+const { CartItem } = require('../models/cartItem');
 const _ = require('lodash');
 
 module.exports.createCartItem = async (req, res) => {
@@ -21,6 +21,7 @@ module.exports.createCartItem = async (req, res) => {
             });
         }  
     } catch (error) {
+        console.log(error)
         return res.status(400).send({message: "Added to cart failed."});
     }
 }
