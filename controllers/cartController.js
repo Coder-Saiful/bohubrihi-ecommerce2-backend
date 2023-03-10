@@ -33,7 +33,7 @@ module.exports.getCartItem = async (req, res) => {
             .populate('product', 'name')
             .populate('user', 'name');
         if (cartItems.length > 0) {
-            return res.status(200).send(cartItems);
+            return res.status(200).send({totalCartItem: cartItems.length, carts: cartItems});
         } else {
             return res.status(400).send({message: "There are no items in this cart."});
         }
