@@ -24,6 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^6.6.5",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "ssl-commerz-node": "^1.0.4"
   }
 }
