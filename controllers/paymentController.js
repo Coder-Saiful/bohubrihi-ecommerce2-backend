@@ -76,7 +76,6 @@ module.exports.initPayment = async (req, res) => {
 
      // Initiate Payment and Get session key
     const response = await payment.paymentInit();
-    console.log(response)
     return res.status(200).send(response);
 }
 
