@@ -29,7 +29,7 @@ module.exports.initPayment = async (req, res) => {
         success: "yoursite.com/success", // If payment Succeed
         fail: "yoursite.com/fail", // If payment failed
         cancel: "yoursite.com/cancel", // If user cancel payment
-        ipn: "yoursite.com/ipn", // SSLCommerz will send http post request in this link
+        ipn: "https://bohubrihi-ecommerce1-backend.onrender.com/api/payment/ipn", // SSLCommerz will send http post request in this link
     });
 
     // Set order details
@@ -76,6 +76,7 @@ module.exports.initPayment = async (req, res) => {
 
      // Initiate Payment and Get session key
     const response = await payment.paymentInit();
+    console.log(response)
     return res.status(200).send(response);
 }
 
