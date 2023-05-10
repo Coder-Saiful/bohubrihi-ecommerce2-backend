@@ -1,14 +1,26 @@
 const {
     PaymentSession
 } = require('ssl-commerz-node');
-const { CartItem } = require('../models/cartItem');
-const { Profile } = require('../models/profile');
+const {
+    CartItem
+} = require('../models/cartItem');
+const {
+    Profile
+} = require('../models/profile');
+const {
+    Order
+} = require('../models/order');
+const {
+    Payment
+} = require('../models/payment');
 
 module.exports.initPayment = async (req, res) => {
     const userId = req.user._id;
-    const cartItems = await CartItem.find({user: userId})
+    const cartItems = await CartItem.find({
+            user: userId
+        })
         .populate('product', 'name');
-    
+
     const total_amount = cartItems.map(item => item.count * item.price)
         .reduce((a, b) => a + b, 0);
 
@@ -21,8 +33,18 @@ module.exports.initPayment = async (req, res) => {
 
     const payment = new PaymentSession(true, process.env.SSL_COMMERZ_STORE_ID, process.env.SSL_COMMERZ_STORE_PASSWORD);
 
-    const profile = await Profile.findOne({user: userId});
-    const { phone, address1, address2, city, state, postcode, country } = profile;
+    const profile = await Profile.findOne({
+        user: userId
+    });
+    const {
+        phone,
+        address1,
+        address2,
+        city,
+        state,
+        postcode,
+        country
+    } = profile;
 
     // Set the urls
     payment.setUrls({
@@ -74,11 +96,30 @@ module.exports.initPayment = async (req, res) => {
         product_profile: "general",
     });
 
-     // Initiate Payment and Get session key
+    // Initiate Payment and Get session key
     const response = await payment.paymentInit();
+    const order = new Order({
+        cartItems: cartItems,
+        transaction_id: tran_id,
+        address: {phone, address1, address2, city, state, postcode, country},
+        user: userId
+    });
+    if (response.status === 'SUCCESS') {
+        order.sessionKey = response.sessionKey;
+        await order.save();
+    }
     return res.status(200).send(response);
 }
 
 module.exports.ipn = async (req, res) => {
-    console.log(req.body)
+    const payment = new Payment(req.body);
+    const tran_id = payment.tran_id;
+    if (payment.status === 'VALID') {
+        const order = await Order.updateOne({transaction_id: tran_id}, {status: 'Complete'});
+        await CartItem.deleteMany(order.cartItems);
+    } else {
+        await Order.deleteOne({transaction_id: tran_id});
+    }
+    await payment.save();
+    return res.status(400).send({message: "Get ipn message..."});
 }
